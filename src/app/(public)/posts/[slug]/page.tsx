@@ -52,9 +52,13 @@ export async function generateMetadata({
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const { getPublishedPosts } = await import("@/queries/posts");
-  const posts = await getPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  try {
+    const { getPublishedPosts } = await import("@/queries/posts");
+    const posts = await getPublishedPosts();
+    return posts.map((post) => ({ slug: post.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function PostPage({ params }: PostPageProps) {
